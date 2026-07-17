@@ -1,4 +1,4 @@
-// مصفوفة المنتجات الوهمية في الـ In-Memory Storage
+
 const products = [
         { 
         id: 1, 
@@ -46,5 +46,5 @@ const products = [
     }
 ];
 
-// تصدير مصفوفة المنتجات
+
 module.exports = products;
