@@ -18,7 +18,7 @@ exports.getAllProducts = (req, res) => {
 };
 
 exports.getProductById = (req, res) => {
-    const id = req.validatedId;
+    const id = req.validatedId || parseInt(req.params.id);
     const product = products.find(p => p.id === id);
 
     if (!product) {
@@ -59,7 +59,7 @@ exports.createProduct = (req, res) => {
 };
 
 exports.updateProduct = (req, res) => {
-    const id = req.validatedId;
+   const id = req.validatedId || parseInt(req.params.id);
     const { name, price, categoryId, inStock } = req.body;
 
     const productIndex = products.findIndex(p => p.id === id);
@@ -84,7 +84,7 @@ exports.updateProduct = (req, res) => {
 };
 
 exports.deleteProduct = (req, res) => {
-    const id = req.validatedId;
+    const id = req.validatedId || parseInt(req.params.id);
     const productIndex = products.findIndex(p => p.id === id);
 
     if (productIndex === -1) {

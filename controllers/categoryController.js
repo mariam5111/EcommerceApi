@@ -9,7 +9,7 @@ exports.getAllCategories = (req, res) => {
 };
 
 exports.getCategoryById = (req, res) => {
-    const id = req.validatedId; 
+   const id = req.validatedId || parseInt(req.params.id);
     const category = categories.find(c => c.id === id);
 
     if (!category) {
@@ -47,7 +47,7 @@ exports.createCategory = (req, res) => {
 };
 
 exports.updateCategory = (req, res) => {
-    const id = req.validatedId;
+    const id = req.validatedId || parseInt(req.params.id);
     const { name } = req.body; 
 
     const categoryIndex = categories.findIndex(c => c.id === id);
@@ -69,7 +69,7 @@ exports.updateCategory = (req, res) => {
 };
 
 exports.deleteCategory = (req, res) => {
-    const id = req.validatedId;
+    const id = req.validatedId || parseInt(req.params.id);
     const categoryIndex = categories.findIndex(c => c.id === id);
 
     if (categoryIndex === -1) {
