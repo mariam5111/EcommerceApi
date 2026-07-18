@@ -3,11 +3,11 @@ const router = express.Router();
 
 
 const productController = require('../controllers/productController');
-
+const { validateProductBody } = require('../middlewares/validationMiddleware');
 
 router.route('/')
     .get(productController.getAllProducts)
-    .post(productController.createProduct);
+    .post(validateProductBody,productController.createProduct);
 
 
 router.route('/:id')

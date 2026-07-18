@@ -1,12 +1,9 @@
-
 let products = require('../data/products');
-
 
 exports.getAllProducts = (req, res) => {
     const { category } = req.query;
     let filteredProducts = products;
 
-    
     if (category) {
         const categoryId = parseInt(category);
         filteredProducts = products.filter(p => p.categoryId === categoryId);
@@ -21,7 +18,7 @@ exports.getAllProducts = (req, res) => {
 };
 
 exports.getProductById = (req, res) => {
-    const id = parseInt(req.params.id);
+    const id = req.validatedId;
     const product = products.find(p => p.id === id);
 
     if (!product) {
@@ -39,15 +36,9 @@ exports.getProductById = (req, res) => {
 };
 
 exports.createProduct = (req, res) => {
+    
     const { name, price, categoryId, inStock } = req.body;
-   if (!name || !price || !categoryId) {
-        return res.status(400).json({
-            success: false,
-            message: "Please provide name, price, and categoryId"
-        });
-    }
 
-  
     const newId = products.length > 0 ? products[products.length - 1].id + 1 : 1;
 
     const newProduct = {
@@ -67,9 +58,8 @@ exports.createProduct = (req, res) => {
     });
 };
 
-
 exports.updateProduct = (req, res) => {
-    const id = parseInt(req.params.id);
+    const id = req.validatedId;
     const { name, price, categoryId, inStock } = req.body;
 
     const productIndex = products.findIndex(p => p.id === id);
@@ -80,7 +70,6 @@ exports.updateProduct = (req, res) => {
             message: `Product with ID ${id} not found`
         });
     }
-
 
     if (name) products[productIndex].name = name;
     if (price) products[productIndex].price = parseFloat(price);
@@ -94,9 +83,8 @@ exports.updateProduct = (req, res) => {
     });
 };
 
-
 exports.deleteProduct = (req, res) => {
-    const id = parseInt(req.params.id);
+    const id = req.validatedId;
     const productIndex = products.findIndex(p => p.id === id);
 
     if (productIndex === -1) {

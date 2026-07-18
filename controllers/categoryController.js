@@ -1,6 +1,4 @@
-
 let categories = require('../data/categories');
-
 
 exports.getAllCategories = (req, res) => {
     res.status(200).json({
@@ -11,7 +9,7 @@ exports.getAllCategories = (req, res) => {
 };
 
 exports.getCategoryById = (req, res) => {
-    const id = parseInt(req.params.id);
+    const id = req.validatedId; 
     const category = categories.find(c => c.id === id);
 
     if (!category) {
@@ -29,15 +27,8 @@ exports.getCategoryById = (req, res) => {
 };
 
 exports.createCategory = (req, res) => {
+   
     const { name } = req.body;
-
-    if (!name) {
-        return res.status(400).json({
-            success: false,
-            message: "Category name is required"
-        });
-    }
-
 
     const newId = categories.length > 0 ? categories[categories.length - 1].id + 1 : 1;
 
@@ -55,10 +46,9 @@ exports.createCategory = (req, res) => {
     });
 };
 
-
 exports.updateCategory = (req, res) => {
-    const id = parseInt(req.params.id);
-    const { name } = req.body;
+    const id = req.validatedId;
+    const { name } = req.body; 
 
     const categoryIndex = categories.findIndex(c => c.id === id);
 
@@ -69,14 +59,6 @@ exports.updateCategory = (req, res) => {
         });
     }
 
-    if (!name) {
-        return res.status(400).json({
-            success: false,
-            message: "Category name is required for update"
-        });
-    }
-
-  
     categories[categoryIndex].name = name;
 
     res.status(200).json({
@@ -86,10 +68,8 @@ exports.updateCategory = (req, res) => {
     });
 };
 
-
-
 exports.deleteCategory = (req, res) => {
-    const id = parseInt(req.params.id);
+    const id = req.validatedId;
     const categoryIndex = categories.findIndex(c => c.id === id);
 
     if (categoryIndex === -1) {
@@ -99,16 +79,13 @@ exports.deleteCategory = (req, res) => {
         });
     }
 
-    
     let products = require('../data/products');
-    
     const initialProductCount = products.length;
     
     categories = categories.filter(c => c.id !== id);
 
     const remainingProducts = products.filter(p => p.categoryId !== id);
     const deletedProductsCount = initialProductCount - remainingProducts.length;
-    
     
     products.length = 0;
     products.push(...remainingProducts);

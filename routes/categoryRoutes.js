@@ -2,11 +2,11 @@ const express = require('express');
 const router = express.Router();
 
 const categoryController = require('../controllers/categoryController');
-
+const { validateCategoryBody } = require('../middlewares/validationMiddleware');
 
 router.route('/')
     .get(categoryController.getAllCategories)
-    .post(categoryController.createCategory);
+    .post(validateCategoryBody, categoryController.createCategory);
 
 
 router.route('/:id')
